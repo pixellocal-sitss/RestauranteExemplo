@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brasa &amp; Raiz – Cozinha brasileira no fogo</title>
+<meta name="description" content="Cardápio digital, horários e reservas pelo WhatsApp do restaurante Brasa & Raiz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#10362a; --verde2:#1b4d3b; --papel:#f7f8f4; --tinta:#16231d;
+  --suave:#5d6b63; --acento:#f0b429; --linha:#dfe5dc; --zap:#1fa855;
+  --serif:'Fraunces',Georgia,serif; --sans:'DM Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:var(--sans);color:var(--tinta);background:var(--papel);line-height:1.6;font-size:17px}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--acento);outline-offset:3px}
+.wrap{width:min(1100px,92%);margin:0 auto}
+h1,h2,h3{font-family:var(--serif);line-height:1.15;font-weight:700}
+h2{font-size:clamp(1.8rem,4.5vw,2.6rem);margin-bottom:.5rem}
+section{padding:72px 0}
+.sub{color:var(--suave);max-width:52ch;margin-bottom:32px}
+
+/* topo */
+header{position:sticky;top:0;z-index:50;background:rgba(16,54,42,.97);backdrop-filter:blur(8px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{font-family:var(--serif);font-weight:700;font-size:1.3rem;color:#fff;text-decoration:none}
+.logo span{color:var(--acento)}
+nav ul{display:flex;gap:26px;list-style:none}
+nav a{color:#dbe7e0;text-decoration:none;font-size:.95rem}
+nav a:hover{color:var(--acento)}
+.menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font:700 1rem var(--sans);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-zap{background:var(--zap);color:#fff}
+.btn-claro{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.5)}
+
+/* hero */
+.hero{background:var(--verde);color:#fff;padding:0;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;min-height:560px;padding:56px 0}
+.hero h1{font-size:clamp(2.4rem,6.5vw,4.4rem);margin-bottom:18px}
+.hero p{color:#cddcd3;max-width:46ch;margin-bottom:28px;font-size:1.1rem}
+.hero .acoes{display:flex;gap:12px;flex-wrap:wrap}
+.status{display:inline-flex;align-items:center;gap:8px;background:var(--verde2);padding:7px 14px;border-radius:999px;font-size:.9rem;margin-bottom:22px}
+.status i{width:10px;height:10px;border-radius:50%;background:#888}
+.status.aberto i{background:#4ade80;box-shadow:0 0 0 4px rgba(74,222,128,.25)}
+.hero-foto{border-radius:220px 220px 24px 24px;overflow:hidden;aspect-ratio:4/5;background:var(--verde2);box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.hero-foto img{width:100%;height:100%;object-fit:cover}
+
+/* cardápio */
+.abas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.aba{padding:10px 20px;border-radius:999px;border:1.5px solid var(--linha);background:#fff;font:500 .95rem var(--sans);cursor:pointer;color:var(--tinta)}
+.aba[aria-selected="true"]{background:var(--verde);border-color:var(--verde);color:#fff}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.prato{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--linha);display:flex;flex-direction:column}
+.foto{aspect-ratio:4/3;background:linear-gradient(135deg,var(--verde2),var(--verde));display:grid;place-items:center;font-size:3rem}
+.foto img{width:100%;height:100%;object-fit:cover}
+.prato .corpo{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.prato h3{font-size:1.2rem;margin-bottom:6px}
+.prato p{color:var(--suave);font-size:.95rem;flex:1}
+.rodape-prato{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.preco{font-family:var(--serif);font-weight:700;font-size:1.25rem}
+.pedir{font-size:.9rem;padding:9px 16px;background:var(--zap);color:#fff;border-radius:999px;text-decoration:none;font-weight:700}
+.prato[hidden]{display:none}
+
+/* sobre */
+.sobre{background:var(--verde);color:#fff}
+.sobre .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.sobre p{color:#cddcd3;margin-top:14px;max-width:50ch}
+.fotos2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fotos2 .foto{border-radius:16px;overflow:hidden;aspect-ratio:3/4}
+.fotos2 .foto:nth-child(2){margin-top:36px}
+
+/* reservas */
+.reserva{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+form{background:#fff;border:1px solid var(--linha);border-radius:20px;padding:28px;display:grid;gap:14px}
+label{display:grid;gap:6px;font-weight:500;font-size:.95rem}
+input,select,textarea{font:inherit;padding:12px 14px;border:1.5px solid var(--linha);border-radius:10px;background:var(--papel);width:100%}
+.dupla{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+form .btn{justify-content:center}
+.nota{font-size:.85rem;color:var(--suave)}
+
+/* horários + endereço */
+.info{background:#fff;border-top:1px solid var(--linha)}
+.info .wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:40px}
+table{width:100%;border-collapse:collapse;margin-top:14px}
+td{padding:11px 0;border-bottom:1px solid var(--linha)}
+td:last-child{text-align:right;font-weight:500}
+tr.hoje td{color:var(--verde2);font-weight:700}
+.end{margin:18px 0}
+iframe{width:100%;height:100%;min-height:320px;border:0;border-radius:18px}
+
+footer{background:var(--tinta);color:#b8c4bd;padding:36px 0;text-align:center;font-size:.9rem}
+footer a{color:var(--acento)}
+
+.flutuante{position:fixed;right:18px;bottom:18px;z-index:60;width:58px;height:58px;border-radius:50%;background:var(--zap);display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.3);text-decoration:none;font-size:1.7rem}
+
+@media(max-width:860px){
+  section{padding:52px 0}
+  .menu-btn{display:block}
+  nav ul{display:none;position:absolute;top:62px;left:0;right:0;flex-direction:column;gap:0;background:var(--verde)}
+  nav ul.aberto{display:flex}
+  nav li a{display:block;padding:16px 4%;border-top:1px solid var(--verde2)}
+  .hero .wrap,.sobre .wrap,.reserva,.info .wrap{grid-template-columns:1fr}
+  .hero .wrap{min-height:0;padding:36px 0 48px}
+  .hero-foto{aspect-ratio:4/3;border-radius:24px;order:-1}
+  .grade{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  body{font-size:16px}
+  .grade{grid-template-columns:1fr}
+  .dupla{grid-template-columns:1fr}
+  .hero .acoes .btn{width:100%;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#inicio" class="logo">Brasa <span>&amp;</span> Raiz</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <nav>
+      <ul id="menuLista">
+        <li><a href="#cardapio">Cardápio</a></li>
+        <li><a href="#sobre">Nossa cozinha</a></li>
+        <li><a href="#reservas">Reservas</a></li>
+        <li><a href="#local">Horários e endereço</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <span class="status" id="status"><i></i><b id="statusTxt">Verificando horário…</b></span>
+      <h1>Comida de panela, brasa e memória.</h1>
+      <p>Cozinha brasileira feita no fogo, com ingredientes de pequenos produtores. Peça pelo WhatsApp ou reserve sua mesa em um minuto.</p>
+      <div class="acoes">
+        <a class="btn btn-zap" href="#reservas">Reservar mesa</a>
+        <a class="btn btn-claro" href="#cardapio">Ver cardápio</a>
+      </div>
+    </div>
+    <div class="hero-foto"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=75" alt="Espetos grelhados na brasa" onerror="this.style.display='none'"></div>
+  </div>
+</section>
+
+<section id="cardapio">
+  <div class="wrap">
+    <h2>Cardápio</h2>
+    <p class="sub">Toque em “Pedir” e o prato já vai na mensagem do WhatsApp.</p>
+    <div class="abas" role="tablist" id="abas">
+      <button class="aba" role="tab" aria-selected="true" data-cat="todos">Todos</button>
+      <button class="aba" role="tab" aria-selected="false" data-cat="entradas">Entradas</button>
+      <button class="aba" role="tab" aria-selected="false" data-cat="principais">Pratos principais</button>
+      <button class="aba" role="tab" aria-selected="false" data-cat="sobremesas">Sobremesas</button>
+      <button class="aba" role="tab" aria-selected="false" data-cat="bebidas">Bebidas</button>
+    </div>
+    <div class="grade" id="grade"></div>
+  </div>
+</section>
+
+<section class="sobre" id="sobre">
+  <div class="wrap">
+    <div>
+      <h2>Do fogo à mesa</h2>
+      <p>Tudo começa na brasa: carnes assadas devagar, legumes defumados e receitas de família. O salão é pequeno de propósito, para você ser bem atendido e comer sem pressa.</p>
+      <p>Temos opções vegetarianas, atendimento para aniversários e espaço para grupos de até 20 pessoas.</p>
+    </div>
+    <div class="fotos2">
+      <div class="foto"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=75" alt="Prato servido no restaurante" loading="lazy" onerror="this.style.display='none'"></div>
+      <div class="foto"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=75" alt="Salão do restaurante" loading="lazy" onerror="this.style.display='none'"></div>
+    </div>
+  </div>
+</section>
+
+<section id="reservas">
+  <div class="wrap reserva">
+    <div>
+      <h2>Reserve sua mesa</h2>
+      <p class="sub">Preencha os dados e o pedido de reserva chega direto no nosso WhatsApp. Respondemos em poucos minutos.</p>
+      <p><a class="btn btn-zap" id="zapDireto" href="#">Falar no WhatsApp</a></p>
+    </div>
+    <form id="formReserva">
+      <label>Nome<input type="text" id="nome" required autocomplete="name"></label>
+      <div class="dupla">
+        <label>Data<input type="date" id="data" required></label>
+        <label>Horário<input type="time" id="hora" required></label>
+      </div>
+      <label>Número de pessoas
+        <select id="pessoas">
+          <option>1</option><option>2</option><option selected>4</option><option>6</option><option>8</option><option>10 ou mais</option>
+        </select>
+      </label>
+      <label>Observações (opcional)<textarea id="obs" rows="2" placeholder="Aniversário, cadeirinha de bebê…"></textarea></label>
+      <button class="btn btn-zap" type="submit">Enviar reserva pelo WhatsApp</button>
+      <p class="nota">Você será levado ao WhatsApp para confirmar o envio.</p>
+    </form>
+  </div>
+</section>
+
+<section class="info" id="local">
+  <div class="wrap">
+    <div>
+      <h2>Horários e endereço</h2>
+      <p class="end"><b>Rua das Palmeiras, 250</b><br>Jardim América – São Paulo/SP<br>CEP 01000-000</p>
+      <a class="btn btn-zap" id="rota" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Rua+das+Palmeiras+250+Sao+Paulo">Como chegar</a>
+      <table id="horarios"></table>
+    </div>
+    <iframe title="Mapa com a localização do restaurante" loading="lazy" src="https://maps.google.com/maps?q=Rua%20das%20Palmeiras%20250%20S%C3%A3o%20Paulo&output=embed"></iframe>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© <span id="ano"></span> Brasa &amp; Raiz · (11) 99999-9999 · @brasaeraiz</p>
+    <p style="margin-top:6px">Site de demonstração criado por <a href="#">Sua Empresa</a></p>
+  </div>
+</footer>
+
+<a class="flutuante" id="zapFlutuante" href="#" aria-label="Chamar no WhatsApp">💬</a>
+
+<script>
+/* ====== CONFIGURE AQUI ====== */
+var WHATSAPP = "5511999999999"; // DDI + DDD + número, sem espaços
+var NOME = "Brasa & Raiz";
+
+var IMG = function(id){return "https://images.unsplash.com/photo-"+id+"?auto=format&fit=crop&w=700&q=75";};
+var PRATOS = [
+  {c:"entradas",n:"Pão de queijo recheado",d:"Quentinho, com recheio de goiabada e queijo canastra.",p:24,e:"🧀",i:"1476224203421-9ac39bcb3327"},
+  {c:"entradas",n:"Salada da horta",d:"Folhas frescas, tomate, manga e castanhas tostadas.",p:28,e:"🥗",i:"1512621776951-a57141f2eefd"},
+  {c:"principais",n:"Picanha na brasa",d:"300 g, arroz biro-biro, farofa e vinagrete da casa.",p:79,e:"🥩",i:"1504674900247-0877df9cc836"},
+  {c:"principais",n:"Hambúrguer Raiz",d:"Blend de 180 g, queijo coalho, cebola caramelizada e fritas.",p:48,e:"🍔",i:"1551782450-a2132b4ba21d"},
+  {c:"principais",n:"Pizza de forno a lenha",d:"Massa de fermentação lenta, mussarela de búfala e manjericão.",p:56,e:"🍕",i:"1565299624946-b28f40a0ae38"},
+  {c:"principais",n:"Bowl vegetariano",d:"Arroz integral, legumes assados, grão-de-bico e molho de ervas.",p:42,e:"🥙",i:"1546069901-ba9599a7e63c"},
+  {c:"sobremesas",n:"Panqueca de doce de leite",d:"Servida morna com sorvete de creme e calda de caramelo.",p:26,e:"🥞",i:"1567620905732-2d1ec7ab7445"},
+  {c:"bebidas",n:"Suco natural da estação",d:"Laranja, abacaxi com hortelã ou maracujá. 400 ml.",p:14,e:"🍹",i:null},
+  {c:"bebidas",n:"Limonada de coco",d:"Gelada, cremosa e sem exagero no açúcar. 500 ml.",p:16,e:"🥥",i:null}
+];
+var HORARIOS = [ // 0 = domingo
+  ["Domingo","11h30 – 17h",11.5,17],
+  ["Segunda","Fechado",null,null],
+  ["Terça","18h – 23h",18,23],
+  ["Quarta","18h – 23h",18,23],
+  ["Quinta","18h – 23h",18,23],
+  ["Sexta","12h – 00h",12,24],
+  ["Sábado","12h – 00h",12,24]
+];
+/* ============================ */
+
+function zapLink(msg){return "https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg);}
+function preco(v){return "R$ "+v.toFixed(2).replace(".",",");}
+
+/* cardápio */
+var grade=document.getElementById("grade");
+PRATOS.forEach(function(x){
+  var el=document.createElement("article");
+  el.className="prato"; el.dataset.cat=x.c;
+  var foto=x.i?'<img src="'+IMG(x.i)+'" alt="'+x.n+'" loading="lazy" onerror="this.remove()">':"";
+  el.innerHTML='<div class="foto" aria-hidden="'+(x.i?"false":"true")+'">'+(foto||x.e)+'</div>'+
+    '<div class="corpo"><h3>'+x.n+'</h3><p>'+x.d+'</p><div class="rodape-prato"><span class="preco">'+preco(x.p)+'</span>'+
+    '<a class="pedir" target="_blank" rel="noopener" href="'+zapLink("Olá! Quero pedir: "+x.n+" ("+preco(x.p)+")")+'">Pedir</a></div></div>';
+  grade.appendChild(el);
+});
+document.getElementById("abas").addEventListener("click",function(e){
+  var b=e.target.closest(".aba"); if(!b) return;
+  document.querySelectorAll(".aba").forEach(function(a){a.setAttribute("aria-selected",a===b)});
+  document.querySelectorAll(".prato").forEach(function(p){p.hidden=!(b.dataset.cat==="todos"||p.dataset.cat===b.dataset.cat)});
+});
+
+/* horários + status */
+var agora=new Date(), dia=agora.getDay(), h=agora.getHours()+agora.getMinutes()/60;
+var tb=document.getElementById("horarios");
+HORARIOS.forEach(function(x,i){
+  var tr=document.createElement("tr"); if(i===dia) tr.className="hoje";
+  tr.innerHTML="<td>"+x[0]+"</td><td>"+x[1]+"</td>"; tb.appendChild(tr);
+});
+var hoje=HORARIOS[dia], aberto=hoje[2]!==null && h>=hoje[2] && h<hoje[3];
+var st=document.getElementById("status");
+st.classList.toggle("aberto",aberto);
+document.getElementById("statusTxt").textContent=aberto?"Aberto agora · hoje "+hoje[1]:(hoje[2]===null?"Fechado hoje":"Fechado agora · hoje "+hoje[1]);
+
+/* WhatsApp */
+var padrao="Olá! Vim pelo site do "+NOME+" e gostaria de uma informação.";
+["zapDireto","zapFlutuante"].forEach(function(id){var a=document.getElementById(id);a.href=zapLink(padrao);a.target="_blank";a.rel="noopener";});
+
+/* reserva */
+var di=document.getElementById("data"); di.min=new Date().toISOString().split("T")[0];
+document.getElementById("formReserva").addEventListener("submit",function(e){
+  e.preventDefault();
+  var d=di.value.split("-").reverse().join("/");
+  var m="Olá! Gostaria de reservar uma mesa no "+NOME+".\n\n"+
+    "Nome: "+document.getElementById("nome").value+"\n"+
+    "Data: "+d+"\nHorário: "+document.getElementById("hora").value+"\n"+
+    "Pessoas: "+document.getElementById("pessoas").value;
+  var o=document.getElementById("obs").value.trim(); if(o) m+="\nObservações: "+o;
+  window.open(zapLink(m),"_blank");
+});
+
+/* menu mobile */
+var mb=document.getElementById("menuBtn"), ml=document.getElementById("menuLista");
+mb.addEventListener("click",function(){var o=ml.classList.toggle("aberto");mb.setAttribute("aria-expanded",o)});
+ml.addEventListener("click",function(e){if(e.target.tagName==="A"){ml.classList.remove("aberto");mb.setAttribute("aria-expanded","false")}});
+document.getElementById("ano").textContent=agora.getFullYear();
+</script>
+</body>
+</html>
